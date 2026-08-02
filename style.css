@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+/* Introduction page */
+
+.intro-page {
+    min-height: 100vh;
+    background: #3f3f3f;
+    font-family: Georgia, serif;
+}
+
+.intro-screen {
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.intro-screen h1 {
+    margin: 0 0 30px;
+    font-size: 3rem;
+}
+
+.intro-screen p {
+    max-width:1400px;
+    margin: 0 auto 25px;
+    font-size: 1.35rem;
+    line-height: 1.6;
+}
+
+.start-webos-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 15px 30px;
+
+    border-radius: 10px;
+
+    background: #176546;
+    color: white;
+
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.start-webos-btn:hover {
+    background: #0f4933;
+}
+
+/* WebOS page */
+
+.webos-page {
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.desktop {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #102d2a,
+            #16473e 48%,
+            #142d46
+        );
+
+    color: white;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+
+    padding: 10px 16px;
+
+    border: 1px solid rgba(255, 255, 25, 0.45);
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.25);
+    color: white;
+
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.desktop-icons {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+
+    display: grid;
+    gap: 16px;
+}
+
+.desktop-icon {
+    display: flex;
+
+    width: 95px;
+    padding: 10px;
+
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    background: transparent;
+    color: white;
+
+    cursor: pointer;
+}
+
+.desktop-icon:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.desktop-icon-image {
+    display: grid;
+    width: 52px;
+    height: 52px;
+    place-items: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, 0.17);
+    overflow: hidden;
+}
+
+.desktop-icon-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.taskbar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    height: 60px;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+
+    background: rgba(10, 20, 28, 0.92);
+}
+
+.hidden {
+    display: none;
+}
+
+.app-window {
+    position: absolute;
+    top: 120px;
+    left: 180px;
+
+    width: 500px;
+    min-height: 280px;
+
+    border: 1px solid #7c8b94;
+    border-radius: 12px;
+
+    background: white;
+    color: #172235;
+
+    overflow: hidden;
+}
+
+.window-header {
+    display: flex;
+    height: 45px;
+    padding-left: 16px;
+    
+    align-items: center;
+    justify-content: space-between;
+
+    background: #dfe8ec;
+    font-weight: bold;
+}
+
+.close-window-button {
+    width: 48px;
+    height: 100%;
+
+    border: none;
+    background: transparent;
+
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.close-window-button:hover {
+    background: #d64545;
+    color: white;
+}
+
+.window-content {
+    padding: 24px;
+}

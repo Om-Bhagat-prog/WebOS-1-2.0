@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+        <title>Om's WebOS</title>
+        <link rel = "stylesheet" href = "style.css">
+    </head>
+    <body class = "webos-page">
+
+        <main id = "desktop" class = "desktop">
+
+            <section id = "welcome-window" class = "app-window hidden">
+                <div class = "window-header">
+                    <span>Welcome</span>
+
+                    <button
+                        class = "close-window-button"
+                        type = "button"
+                        aria-label = "Close Welcome window"
+                    >
+                        ×
+                    </button>
+                </div>
+
+                <div class = "window-content">
+                    <h2>Welcome to Om's WebOS</h2>
+
+                    <p>
+                        This operating system was created using HTML, CSS,
+                        and Javascript.
+                    </p>
+                </div>
+            </section>
+
+            <a class = "back-button" href = "index.html">
+                Back to Intro
+            </a>
+
+            <section class = "desktop-icons">
+                <button 
+                    class = "desktop-icon"
+                    type = "button"
+                    data-open-window = "welcome-window"
+                    >
+                    <span class = "desktop-icon-image">
+                        <img
+                            src = "images/welcome-icon.jpg"
+                            alt = ""
+                        >
+                        </span>
+                    <span>Welcome</span>
+                </button>
+
+                <button class = "desktop-icon" type = "button">
+                    <span class = "desktop-icon-image">
+                        <img
+                            src = "images/notes.png"
+                            alt = ""
+                        >
+                    </span>
+                    <span>Notes</span>
+                </button>
+
+                <button class = "desktop-icon" type = "button">
+                    <span class = "desktop-icon-image">
+                        <img
+                            src = "images/nature.png"
+                            alt = ""
+                        >
+                    </span>
+                    <span>Nature</span>
+                </button>
+
+                <button class = "desktop-icon" type = "button">
+                    <span class = "desktop-icon-image">
+                        <img
+                            src = "images/calculator.png"
+                            alt = ""
+                        >
+                    </span>
+                    <span>Calculator</span>
+                </button>
+
+                <button class = "desktop-icon" type = "button">
+                    <span class = "desktop-icon-image">
+                        <img
+                            src = "images/Screenshot 2026-07-31 163743.png"
+                            alt = ""
+                        >
+                    </span>
+                    <span>About Me</span>
+                </button>
+
+                <button class = "desktop-icon" type = "button">
+                    <span class = "desktop-icon-image">
+                        <img
+                            src = "images/settings.jpg"
+                            alt = ""
+                        >
+                    </span>
+                    <span>Settings</span>
+                </button>
+            </section>
+
+            <div class = "taskbar">
+                <span>Om's WebOS</span>
+            </div>
+
+        </main>
+
+        <script src = "script.js"></script>
+    </body>
+</html>
