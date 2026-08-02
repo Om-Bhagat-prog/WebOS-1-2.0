@@ -219,3 +219,50 @@ body {
 .window-content {
     padding: 24px;
 }
+
+.note-title-input,
+note-textarea {
+    width: 100%;
+    margin: 8px 0 18px;
+    padding: 10px;
+
+    border: 1px solid #aab5bd;
+    border-radius: 6px;
+
+    font: inherit;
+}
+
+.note-textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.notes-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.notes-actions button {
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #176546;
+    color: white;
+
+    cursor: pointer;
+}
+
+.notes-actions button:hover {
+    background: #0f4933;
+}
+
+#notes-message {
+    min-height: 24px;
+    margin-top: 14px;
+
+    color: #176546;
+    font-weight: bold;
+}
+
