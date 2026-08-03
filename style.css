@@ -172,6 +172,7 @@ body {
 }
 
 .app-window {
+    z-index: 20;
     position: absolute;
     top: 120px;
     left: 180px;
@@ -272,3 +273,21 @@ note-textarea {
     font-size: 0.9rem;
 }
 
+.window-header {
+    cursor: grab;
+    user-select: none;
+}
+
+.window-header:active {
+    cursor: grabbing;
+}
+
+.app-window {
+    position: absolute;
+    z-index: 20;
+    touch-action: none;
+}
+
+.app-window.dragging {
+    opacity: 0.95;
+}

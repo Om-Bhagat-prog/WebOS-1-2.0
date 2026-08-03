@@ -16,8 +16,9 @@ openWindowButtons.forEach(button => {
 
         if (windowElement) {
             windowElement.classList.remove("hidden");
-        }
-    });
+            bringWindowToFront(windowElement);
+        }}
+    );
 });
 
 closeWindowButtons.forEach(button => {
@@ -30,6 +31,119 @@ closeWindowButtons.forEach(button => {
         }
     });
 });
+
+/* Draggable Windows */
+
+const applicationWindows =
+    document.querySelectorAll(".app-window");
+
+let highestWindowZIndex = 20;
+
+function bringWindowToFront(windowElement) {
+    highestWindowZIndex += 1;
+
+    windowElement.style.zIndex =
+        highestWindowZIndex;
+}
+
+function makeWindowDraggable(windowElement) {
+    const dragHandle = 
+        windowElement.querySelector(".drag-handle");
+
+    if (!dragHandle) {
+        return;
+    }
+
+    let isDragging = false;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let windowStartLeft = 0;
+    let windowStartTop = 0;
+
+    dragHandle.addEventListener(
+        "pointerdown",
+        (event) => {
+            if (
+                event.target.closest(
+                    ".close-window-button"
+                )
+            ) {
+                return;
+            }
+
+            isDragging = true;
+
+            pointerStartX = event.clientX;
+            pointerStartY = event.clientY;
+
+            windowStartLeft = 
+                windowElement.offsetLeft;
+
+            windowStartTop =
+                windowElement.offsetTop;
+
+            bringWindowToFront(windowElement);
+
+            windowElement.classList.add(
+                "dragging"
+            );
+
+            dragHandle.setPointerCapture(
+                event.pointerId
+            );
+        }
+    );
+
+    dragHandle.addEventListener(
+        "pointermove",
+        (event) => {
+            if (!isDragging) {
+                return;
+            }
+
+            const distanceX =
+                event.clientX - pointerStartX;
+
+            const distanceY =
+                event.clientY - pointerStartY;
+
+            const newLeft = 
+                windowStartLeft + distanceX;
+
+            const newTop = 
+                windowStartTop + distanceY;
+
+            windowElement.style.left =
+                `${newLeft}px`;
+
+            windowElement.style.top = 
+                `${newTop}px`;
+        }
+    );
+
+        dragHandle.addEventListener(
+            "pointerup",
+            (event) => {
+                if (!isDragging) {
+                    return;
+            }
+
+            isDragging = false;
+
+            windowElement.classList.remove(
+                "dragging"
+            );
+
+            dragHandle.releasePointerCapture(
+                event.pointerId
+            );
+        }
+    );
+}
+
+applicationWindows.forEach(
+    makeWindowDraggable
+);
 
 /* Notes Application */
 
