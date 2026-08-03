@@ -2,11 +2,18 @@
 
 /* Window Controls */
 
+const desktop =
+    document.getElementById("desktop");
+
 const openWindowButtons =
-    document.querySelectorAll("[data-open-window]");
+    document.querySelectorAll(
+        "[data-open-window]"
+    );
 
 const closeWindowButtons =
-    document.querySelectorAll(".close-window-button");
+    document.querySelectorAll(
+        ".close-window-button"
+    );
 
 openWindowButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -37,6 +44,9 @@ closeWindowButtons.forEach(button => {
 const applicationWindows =
     document.querySelectorAll(".app-window");
 
+const TASKBAR_HEIGHT = 60;
+const WINDOW_EDGE_GAP = 8; 
+
 let highestWindowZIndex = 20;
 
 function bringWindowToFront(windowElement) {
@@ -44,6 +54,65 @@ function bringWindowToFront(windowElement) {
 
     windowElement.style.zIndex =
         highestWindowZIndex;
+}
+
+function getSafeWindowPosition(
+    windowElement,
+    proposedLeft,
+    proposedTop
+) {
+    const desktopWidth =
+        desktop.clientWidth;
+
+    const desktopHeight =
+        desktop.clientHeight;
+
+    const windowWidth =
+        windowElement.offsetWidth;
+
+    const windowHeight =
+        windowElement.offsetHeight;
+
+    const minimumLeft =
+        WINDOW_EDGE_GAP;
+
+    const maximumLeft =
+        desktopWidth -
+        windowWidth -
+        WINDOW_EDGE_GAP;
+
+    const minimumTop =
+        WINDOW_EDGE_GAP;
+
+    const maximumTop =
+        desktopHeight -
+        TASKBAR_HEIGHT -
+        windowHeight -
+        WINDOW_EDGE_GAP;
+
+    return {
+        left: Math.min(
+            Math.max(
+                proposedLeft,
+                minimumLeft
+            ),
+            Math.max(
+                minimumLeft,
+                maximumLeft
+            )
+        ),
+
+        top: Math.min(
+            Math.max(
+                proposedTop,
+                minimumTop
+            ),
+            Math.max(
+                minimumTop,
+                maximumTop
+            )
+        )
+    };
 }
 
 function makeWindowDraggable(windowElement) {
@@ -113,11 +182,18 @@ function makeWindowDraggable(windowElement) {
             const newTop = 
                 windowStartTop + distanceY;
 
-            windowElement.style.left =
-                `${newLeft}px`;
+            const safePosition =
+                getSafeWindowPosition(
+                    windowElement,
+                    newLeft,
+                    newTop
+                );
 
-            windowElement.style.top = 
-                `${newTop}px`;
+            windowElement.style.left =
+                `${safePosition.left}px`;
+
+            windowElement.style.top =
+                `${safePosition.top}px`;
         }
     );
 
@@ -143,6 +219,44 @@ function makeWindowDraggable(windowElement) {
 
 applicationWindows.forEach(
     makeWindowDraggable
+);
+
+function keepWindowInsideDesktop(windowElement) {
+    if (
+        windowElement.classList.contains("hidden")
+    ) {
+        return;
+    }
+
+    const currentLeft =
+        windowElement.offsetLeft;
+
+    const currentTop =
+        windowElement.offsetTop;
+
+    const safePosition =
+        getSafeWindowPosition(
+            windowElement,
+            currentLeft,
+            currentTop
+        );
+
+    windowElement.style.left =
+        `${safePosition.left}px`;
+
+    windowElement.style.top =
+        `${safePosition.top}px`;
+}
+
+function keepAllWindowsInsideDesktop() {
+    applicationWindows.forEach(
+        keepWindowInsideDesktop
+    );
+}
+
+window.addEventListener(
+    "resize",
+    keepAllWindowsInsideDesktop
 );
 
 /* Notes Application */

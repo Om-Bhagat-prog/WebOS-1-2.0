@@ -172,6 +172,9 @@ body {
 }
 
 .app-window {
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 76px);
+
     z-index: 20;
     position: absolute;
     top: 120px;
@@ -233,7 +236,19 @@ note-textarea {
     font: inherit;
 }
 
-.note-textarea {
+.notes-title,
+.notes-editor {
+    width: 100%;
+    margin: 8px 0 18px;
+    padding: 10px;
+
+    border: 1px solid #aab5bd;
+    border-radius: 6px;
+
+    font: inherit;
+}
+
+.notes-editor {
     min-height: 130px;
     resize: vertical;
 }
@@ -283,6 +298,9 @@ note-textarea {
 }
 
 .app-window {
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 76px);
+
     position: absolute;
     z-index: 20;
     touch-action: none;
