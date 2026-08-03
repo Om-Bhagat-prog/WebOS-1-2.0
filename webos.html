@@ -46,42 +46,56 @@
                     </button>
                 </div>
 
-                <div class = "window-content">
-                    <h2>Notes</h2>
+                <div class="window-content notes-content">
+    <h2>Notes</h2>
 
-                    <label for = "note-title">
-                        Note title
-                    </label>
+    <label for="notes-title">
+        Note title
+    </label>
 
-                    <input
-                        id = "note-title"
-                        class = "note-title-input"
-                        type = "text"
-                        placeholder = "Enter note title"
-                    >
+    <input
+        id="notes-title"
+        class="notes-title"
+        type="text"
+        placeholder="Enter a title"
+    >
 
-                    <label for = "note-text">
-                        Note
-                    </label>
+    <label for="notes-editor">
+        Note
+    </label>
 
-                    <textarea
-                        id = "note-text"
-                        class = "note-textarea"
-                        placeholder = "Write a note here"
-                    ></textarea>
+    <textarea
+        id="notes-editor"
+        class="notes-editor"
+        placeholder="Start writing..."
+    ></textarea>
 
-                    <div class = "notes-actions">
-                        <button id = "save-note-button" type = "button">
-                            Save
-                        </button>
+    <div class="notes-actions">
+        <button
+            id="save-note-button"
+            class="notes-button"
+            type="button"
+        >
+            Save
+        </button>
 
-                        <button id = "clear-note-button" type = "button">
-                            Clear
-                        </button>
-                    </div>
+        <button
+            id="clear-note-button"
+            class="notes-button"
+            type="button"
+        >
+            Clear
+        </button>
 
-                    <p id = "notes-message"></p>
-                </div>
+        <span
+            id="notes-status"
+            class="notes-status"
+            role="status"
+            aria-live="polite"
+        ></span>
+    </div>
+</div>
+                
             </section>
 
             <a class = "back-button" href = "index.html">

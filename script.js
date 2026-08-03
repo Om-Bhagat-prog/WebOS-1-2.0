@@ -1,5 +1,7 @@
 "use strict";
 
+/* Window Controls */
+
 const openWindowButtons =
     document.querySelectorAll("[data-open-window]");
 
@@ -29,31 +31,102 @@ closeWindowButtons.forEach(button => {
     });
 });
 
+/* Notes Application */
+
+const notesTitle = 
+    document.getElementById("notes-title");
+
+const notesEditor = 
+    document.getElementById("notes-editor");
+
 const saveNoteButton =
     document.getElementById("save-note-button");
 
 const clearNoteButton =
     document.getElementById("clear-note-button");
 
-const noteTitle =
-    document.getElementById("note-title");
+const notesStatus =
+    document.getElementById("notes-status");
 
-const noteText =
-    document.getElementById("note-text");
+const NOTES_STORAGE_KEY = 
+    "oms-webos-note";
 
-const notesMessage =
-    document.getElementById("notes-message");
 
-if (saveNoteButton) {
-    saveNoteButton.addEventListener("click", () => {
-        notesMessage.text = "Note saved.";
-    });
+function saveNote() {
+    const note = {
+        title: notesTitle.value,
+        content: notesEditor.value
+    };
+
+    localStorage.setItem(
+        NOTES_STORAGE_KEY,
+        JSON.stringify(note)
+    );
+
+    notesStatus.textContent = 
+    "Note saved";
 }
 
-if (clearNoteButton) {
-    clearNoteButton.addEventListener("click", () => {
-        noteTitle.value = "";
-        noteText.value = "";
-        notesMessage.textContent = "Note cleared.";
-    });
+function clearNote() {
+    notesTitle.value = "";
+    notesEditor.value = "";
+
+    localStorage.removeItem(
+        NOTES_STORAGE_KEY
+    );
+
+    notesStatus.textContent = 
+        "Note cleared";
 }
+
+function loadSavedNote() {
+    const savedNote =
+        localStorage.getItem(
+            NOTES_STORAGE_KEY
+        );
+
+        if (!savedNote) {
+            return;
+        }
+
+        try {
+            const note = 
+                JSON.parse(savedNote);
+
+            notesTitle.value =
+                note.title || "";
+
+            notesEditor.value =
+                note.content || "";
+        } catch (error) {
+            console.error(
+                "Could not load saved note.",
+                error
+            );
+
+            localStorage.removeItem(
+                NOTES_STORAGE_KEY
+            );
+        }
+}
+
+if (
+    notesTitle &&
+    notesEditor &&
+    saveNoteButton &&
+    clearNoteButton &&
+    notesStatus
+) {
+    saveNoteButton.addEventListener(
+        "click",
+        saveNote
+    );
+
+    clearNoteButton.addEventListener(
+        "click",
+        clearNote
+    );
+
+    loadSavedNote();
+}
+
