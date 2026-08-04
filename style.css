@@ -202,6 +202,26 @@ body {
 
     background: #dfe8ec;
     font-weight: bold;
+
+    cursor: grab;
+    user-select: none;
+}
+
+.window-controls {
+    display: flex;
+    height: 100%;
+}
+
+.minimize-window-button,
+.close-window-button {
+    width: 48px;
+    height: 100%;
+
+    border: none;
+    background: transparent;
+
+    font-size: 1.25rem;
+    cursor: pointer;
 }
 
 .close-window-button {
@@ -308,4 +328,59 @@ note-textarea {
 
 .app-window.dragging {
     opacity: 0.95;
+}
+
+.window-controls {
+    display: flex;
+    height: 100%;
+}
+
+.minimize-window-button,
+.close-window-button {
+    width: 48px;
+    height: 100%;
+
+    border: none;
+    background: transparent;
+
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.minimize-window-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.close-window-button:hover {
+    background: #d64545;
+    color: white;
+}
+
+.taskbar {
+    gap: 20px;
+}
+
+.taskbar-title  {
+    flex: 0 0 auto;
+}
+
+.taskbar-apps {
+    display: flex;
+    gap: 8px;
+}
+
+.taskbar-app-button {
+    padding: 8px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+
+    cursor: pointer;
+}
+
+.taskbar-app-button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }

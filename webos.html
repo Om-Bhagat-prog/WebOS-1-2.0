@@ -10,30 +10,48 @@
 
         <main id = "desktop" class = "desktop">
 
-            <section id = "welcome-window" class = "app-window hidden">
-                <div class = "window-header drag-handle">
+            <section
+                id="welcome-window"
+                class="app-window hidden"
+                data-app-title="Welcome"
+            >
+                <div class="window-header drag-handle">
                     <span>Welcome</span>
 
-                    <button
-                        class = "close-window-button"
-                        type = "button"
-                        aria-label = "Close Welcome window"
-                    >
-                        ×
-                    </button>
+                    <div class="window-controls">
+                            <button
+                                class="minimize-window-button"
+                                type="button"
+                                aria-label="Minimize Welcome window"
+                        >
+                            −
+                            </button>
+
+                        <button
+                            class="close-window-button"
+                            type="button"
+                            aria-label="Close Welcome window"
+                        >
+                            ×
+                        </button>
+                    </div>
                 </div>
 
-                <div class = "window-content">
+                <div class="window-content">
                     <h2>Welcome to Om's WebOS</h2>
 
                     <p>
                         This operating system was created using HTML, CSS,
-                        and Javascript.
+                        and JavaScript.
                     </p>
                 </div>
             </section>
             
-            <section id = "notes-window" class = "app-window hidden">
+            <section 
+                id = "notes-window"
+                class = "app-window hidden"
+                data-app-title = "Notes"
+            >
                 <div class = "window-header drag-handle">
                     <span>Notes</span>
 
@@ -173,7 +191,14 @@
             </section>
 
             <div class = "taskbar">
-                <span>Om's WebOS</span>
+                <span class = "taskbar-title">
+                    Om's WebOS
+                </span>
+
+                <div
+                    id = "taskbar-apps"
+                    class = "taskbar-apps"
+                ></div>
             </div>
 
         </main>

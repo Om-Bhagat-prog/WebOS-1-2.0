@@ -23,6 +23,9 @@ openWindowButtons.forEach(button => {
 
         if (windowElement) {
             windowElement.classList.remove("hidden");
+            windowElement.dataset.minimized = "false";
+
+            createTaskbarButton(windowElement);
             bringWindowToFront(windowElement);
         }}
     );
@@ -35,9 +38,84 @@ closeWindowButtons.forEach(button => {
 
         if (windowElement) {
             windowElement.classList.add("hidden");
+            windowElement.dataset.minimized = "false";
+
+        const taskbarButton = 
+            getTaskbarButton(windowElement.id);
+
+        if (taskbarButton) {
+            taskbarButton.remove();
+        }
+    }
+    });
+});
+
+const minimizeWindowButtons =
+    document.querySelectorAll(
+        ".minimize-window-button"
+    );
+
+const taskbarApps =
+    document.getElementById("taskbar-apps");
+
+function getTaskbarButton(windowId) {
+    return taskbarApps.querySelector(
+        `[data-taskbar-window="${windowId}"]`
+    );
+}
+
+function createTaskbarButton(windowElement) {
+    const existingButton =
+        getTaskbarButton(windowElement.id);
+
+    if (existingButton) {
+        return existingButton;
+    }
+
+    const button = 
+        document.createElement("button");
+
+    button.type = "button";
+    button.className = "taskbar-app-button";
+
+    button.dataset.taskbarWindow =
+        windowElement.id;
+
+    button.textContent =
+        windowElement.dataset.appTitle ||
+        "Application";
+
+    button.addEventListener("click", () => {
+        windowElement.classList.remove("hidden");
+        windowElement.dataset.minimized = "false";
+
+        bringWindowToFront(windowElement);
+    });
+
+    taskbarApps.appendChild(button);
+
+    return button;
+}
+
+function  minimizeWindow(windowElement) {
+    createTaskbarButton(windowElement);
+
+    windowElement.classList.add("hidden");
+    windowElement.dataset.minimized = "true";
+}
+
+minimizeWindowButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const windowElement =
+            button.closest(".app-window");
+
+        if (windowElement) {
+            minimizeWindow(windowElement);
         }
     });
 });
+
+
 
 /* Draggable Windows */
 
@@ -134,7 +212,7 @@ function makeWindowDraggable(windowElement) {
         (event) => {
             if (
                 event.target.closest(
-                    ".close-window-button"
+                    ".window-controls"
                 )
             ) {
                 return;
