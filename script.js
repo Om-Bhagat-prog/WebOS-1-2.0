@@ -801,3 +801,61 @@ if (
 
     loadSavedNote();
 }
+
+/* =========================================================
+   Nature application
+   ========================================================= */
+
+const natureCheckboxes =
+    document.querySelectorAll(
+        ".nature-checkbox"
+    );
+
+const natureProgress =
+    document.getElementById(
+        "nature-progress"
+    );
+
+const resetNatureButton =
+    document.getElementById(
+        "reset-nature-button"
+    );
+
+function updateNatureProgress() {
+    const completedCount = 
+        Array.from(natureCheckboxes)
+            .filter(
+                (checkbox) =>
+                    checkbox.checked
+            )
+            .length;
+
+        natureProgress.textContent = 
+            `${completedCount} of ` +
+            `${natureCheckboxes.length} ` + 
+            "challenges completed";
+}
+
+natureCheckboxes.forEach(
+    (checkbox) => {
+        checkbox.addEventListener(
+            "change",
+            updateNatureProgress
+        );
+    }
+);
+
+if (resetNatureButton) {
+    resetNatureButton.addEventListener(
+        "click",
+        () => {
+            natureCheckboxes.forEach(
+                (checkbox) => {
+                    checkbox.checked = false;
+                }
+            );
+
+            updateNatureProgress();
+        }
+    );
+}

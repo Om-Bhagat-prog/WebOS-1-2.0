@@ -500,3 +500,69 @@ button {
         display: none;
     }
 }
+
+#nature-window {
+    top: 100px;
+    left: 330px;
+
+    width: 560px;
+    min-height: 390px;
+}
+
+.nature-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.nature-content h2,
+.nature-content p {
+    margin: 0;
+}
+
+.nature-challenge {
+    display: flex;
+
+    padding: 14px;
+
+    align-items: center;
+    gap: 12px;
+
+    border: 1px solid #c9d4d0;
+    border-radius: 8px;
+
+    background: #f4f8f6;
+
+    cursor: pointer;
+}
+
+.nature-checkbox {
+    width: 20px;
+    height: 20px;
+
+    accent-color: #176546;
+}
+
+.nature-progress {
+    color: #176546;
+
+    font-weight: bold;
+}
+
+.nature-reset-button {
+    align-self : flex-start;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #176546;
+    color: white;
+
+    cursor: pointer;
+}
+
+.nature-reset-button:hover {
+    background: #0f4933;
+}
