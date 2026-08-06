@@ -806,56 +806,125 @@ if (
    Nature application
    ========================================================= */
 
-const natureCheckboxes =
+const natureCheckboxes = 
     document.querySelectorAll(
         ".nature-checkbox"
     );
 
-const natureProgress =
+const natureProgress = 
     document.getElementById(
         "nature-progress"
     );
 
-const resetNatureButton =
+const resetNatureButton = 
     document.getElementById(
         "reset-nature-button"
     );
 
+const NATURE_STORAGE_KEY = 
+    "oms-webos-nature-progress";
+
 function updateNatureProgress() {
     const completedCount = 
         Array.from(natureCheckboxes)
-            .filter(
-                (checkbox) =>
-                    checkbox.checked
-            )
-            .length;
+        .filter(
+            (checkbox) =>
+                checkbox.checked
+        )
+        .length;
 
-        natureProgress.textContent = 
-            `${completedCount} of ` +
-            `${natureCheckboxes.length} ` + 
-            "challenges completed";
+    if (!natureProgress) {
+        return;
+    }
+
+    natureProgress.textContent = 
+        `${completedCount} of ` +
+        `${natureCheckboxes.length} ` +
+        "challenges completed";
 }
 
-natureCheckboxes.forEach(
+function saveNatureProgress() {
+    const progress = {};
+
+    natureCheckboxes.forEach(
     (checkbox) => {
-        checkbox.addEventListener(
-            "change",
-            updateNatureProgress
-        );
-    }
-);
-
-if (resetNatureButton) {
-    resetNatureButton.addEventListener(
-        "click",
-        () => {
-            natureCheckboxes.forEach(
-                (checkbox) => {
-                    checkbox.checked = false;
-                }
-            );
-
-            updateNatureProgress();
+        progress[checkbox.id] = 
+            checkbox.checked;
         }
     );
+
+    localStorage.setItem(
+        NATURE_STORAGE_KEY,
+        JSON.stringify(progress)
+    );
 }
+
+function loadNatureProgress() {
+    const savedProgress = 
+        localStorage.getItem(
+            NATURE_STORAGE_KEY
+        );
+
+    if (!savedProgress) {
+        updateNatureProgress();
+        return;
+    }
+
+    try {
+        const progress = 
+            JSON.parse(savedProgress);
+
+        natureCheckboxes.forEach(
+            (checkbox) => {
+                checkbox.checked = 
+                    progress[checkbox.id] ||
+                    false;
+                }
+            );
+        } catch (error) {
+            console.error(
+            "Could not load Nature progress.",
+            error
+            );
+
+            localStorage.removeItem(
+                NATURE_STORAGE_KEY
+            );
+        }
+
+        updateNatureProgress();
+    }
+
+    function resetNatureProgress() {
+        natureCheckboxes.forEach(
+            (checkbox) => {
+                checkbox.checked = false;
+            }
+        );
+
+        localStorage.removeItem(
+            NATURE_STORAGE_KEY
+        );
+
+        updateNatureProgress();
+    }
+
+    natureCheckboxes.forEach(
+        (checkbox) => {
+            checkbox.addEventListener(
+                "change",
+                () => {
+                    updateNatureProgress();
+                    saveNatureProgress();
+                }
+            );
+        }
+    );
+
+    if (resetNatureButton) {
+        resetNatureButton.addEventListener(
+            "click",
+            resetNatureProgress
+        );
+    }
+loadNatureProgress();
