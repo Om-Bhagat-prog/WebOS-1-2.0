@@ -1,6 +1,8 @@
 "use strict";
 
-/* Window Controls */
+/* =========================================================
+   Element references
+   ========================================================= */
 
 const desktop =
     document.getElementById("desktop");
@@ -15,48 +17,54 @@ const closeWindowButtons =
         ".close-window-button"
     );
 
-openWindowButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        const windowId = button.dataset.openWindow;
-        const windowElement = 
-        document.getElementById(windowId);
-
-        if (windowElement) {
-            windowElement.classList.remove("hidden");
-            windowElement.dataset.minimized = "false";
-
-            createTaskbarButton(windowElement);
-            bringWindowToFront(windowElement);
-        }}
-    );
-});
-
-closeWindowButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        const windowElement =
-            button.closest(".app-window");
-
-        if (windowElement) {
-            windowElement.classList.add("hidden");
-            windowElement.dataset.minimized = "false";
-
-        const taskbarButton = 
-            getTaskbarButton(windowElement.id);
-
-        if (taskbarButton) {
-            taskbarButton.remove();
-        }
-    }
-    });
-});
-
 const minimizeWindowButtons =
     document.querySelectorAll(
         ".minimize-window-button"
     );
 
+const maximizeWindowButtons =
+    document.querySelectorAll(
+        ".maximize-window-button"
+    );
+
+const applicationWindows =
+    document.querySelectorAll(
+        ".app-window"
+    );
+
 const taskbarApps =
-    document.getElementById("taskbar-apps");
+    document.getElementById(
+        "taskbar-apps"
+    );
+
+/* =========================================================
+   Window state
+   ========================================================= */
+
+const TASKBAR_HEIGHT = 60;
+const WINDOW_EDGE_GAP = 8;
+
+let highestWindowZIndex = 20;
+
+const normalWindowStates =
+    new Map();
+
+/* =========================================================
+   Window stacking
+   ========================================================= */
+
+function bringWindowToFront(
+    windowElement
+) {
+    highestWindowZIndex += 1;
+
+    windowElement.style.zIndex =
+        String(highestWindowZIndex);
+}
+
+/* =========================================================
+   Taskbar buttons
+   ========================================================= */
 
 function getTaskbarButton(windowId) {
     return taskbarApps.querySelector(
@@ -64,19 +72,27 @@ function getTaskbarButton(windowId) {
     );
 }
 
-function createTaskbarButton(windowElement) {
+function createTaskbarButton(
+    windowElement
+) {
     const existingButton =
-        getTaskbarButton(windowElement.id);
+        getTaskbarButton(
+            windowElement.id
+        );
 
     if (existingButton) {
         return existingButton;
     }
 
-    const button = 
-        document.createElement("button");
+    const button =
+        document.createElement(
+            "button"
+        );
 
     button.type = "button";
-    button.className = "taskbar-app-button";
+
+    button.className =
+        "taskbar-app-button";
 
     button.dataset.taskbarWindow =
         windowElement.id;
@@ -85,54 +101,166 @@ function createTaskbarButton(windowElement) {
         windowElement.dataset.appTitle ||
         "Application";
 
-    button.addEventListener("click", () => {
-        windowElement.classList.remove("hidden");
-        windowElement.dataset.minimized = "false";
+    button.addEventListener(
+        "click",
+        () => {
+            windowElement.classList.remove(
+                "hidden"
+            );
 
-        bringWindowToFront(windowElement);
-    });
+            windowElement.dataset.minimized =
+                "false";
+
+            bringWindowToFront(
+                windowElement
+            );
+        }
+    );
 
     taskbarApps.appendChild(button);
 
     return button;
 }
 
-function  minimizeWindow(windowElement) {
-    createTaskbarButton(windowElement);
+/* =========================================================
+   Open windows
+   ========================================================= */
 
-    windowElement.classList.add("hidden");
-    windowElement.dataset.minimized = "true";
+openWindowButtons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                const windowId =
+                    button.dataset.openWindow;
+
+                const windowElement =
+                    document.getElementById(
+                        windowId
+                    );
+
+                if (!windowElement) {
+                    return;
+                }
+
+                windowElement.classList.remove(
+                    "hidden"
+                );
+
+                windowElement.dataset.minimized =
+                    "false";
+
+                createTaskbarButton(
+                    windowElement
+                );
+
+                bringWindowToFront(
+                    windowElement
+                );
+            }
+        );
+    }
+);
+
+/* =========================================================
+   Close windows
+   ========================================================= */
+
+closeWindowButtons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                const windowElement =
+                    button.closest(
+                        ".app-window"
+                    );
+
+                if (!windowElement) {
+                    return;
+                }
+
+                windowElement.classList.add(
+                    "hidden"
+                );
+
+                windowElement.classList.remove(
+                    "maximized",
+                    "dragging"
+                );
+
+                windowElement.dataset.minimized =
+                    "false";
+
+                windowElement.dataset.maximized =
+                    "false";
+
+                normalWindowStates.delete(
+                    windowElement.id
+                );
+
+                updateMaximizeButton(
+                    windowElement,
+                    false
+                );
+
+                const taskbarButton =
+                    getTaskbarButton(
+                        windowElement.id
+                    );
+
+                if (taskbarButton) {
+                    taskbarButton.remove();
+                }
+            }
+        );
+    }
+);
+
+/* =========================================================
+   Minimize windows
+   ========================================================= */
+
+function minimizeWindow(
+    windowElement
+) {
+    createTaskbarButton(
+        windowElement
+    );
+
+    windowElement.classList.add(
+        "hidden"
+    );
+
+    windowElement.dataset.minimized =
+        "true";
 }
 
-minimizeWindowButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const windowElement =
-            button.closest(".app-window");
+minimizeWindowButtons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                const windowElement =
+                    button.closest(
+                        ".app-window"
+                    );
 
-        if (windowElement) {
-            minimizeWindow(windowElement);
-        }
-    });
-});
+                if (!windowElement) {
+                    return;
+                }
 
+                minimizeWindow(
+                    windowElement
+                );
+            }
+        );
+    }
+);
 
-
-/* Draggable Windows */
-
-const applicationWindows =
-    document.querySelectorAll(".app-window");
-
-const TASKBAR_HEIGHT = 60;
-const WINDOW_EDGE_GAP = 8; 
-
-let highestWindowZIndex = 20;
-
-function bringWindowToFront(windowElement) {
-    highestWindowZIndex += 1;
-
-    windowElement.style.zIndex =
-        highestWindowZIndex;
-}
+/* =========================================================
+   Safe window position
+   ========================================================= */
 
 function getSafeWindowPosition(
     windowElement,
@@ -155,18 +283,24 @@ function getSafeWindowPosition(
         WINDOW_EDGE_GAP;
 
     const maximumLeft =
-        desktopWidth -
-        windowWidth -
-        WINDOW_EDGE_GAP;
+        Math.max(
+            minimumLeft,
+            desktopWidth -
+                windowWidth -
+                WINDOW_EDGE_GAP
+        );
 
     const minimumTop =
         WINDOW_EDGE_GAP;
 
     const maximumTop =
-        desktopHeight -
-        TASKBAR_HEIGHT -
-        windowHeight -
-        WINDOW_EDGE_GAP;
+        Math.max(
+            minimumTop,
+            desktopHeight -
+                TASKBAR_HEIGHT -
+                windowHeight -
+                WINDOW_EDGE_GAP
+        );
 
     return {
         left: Math.min(
@@ -174,10 +308,7 @@ function getSafeWindowPosition(
                 proposedLeft,
                 minimumLeft
             ),
-            Math.max(
-                minimumLeft,
-                maximumLeft
-            )
+            maximumLeft
         ),
 
         top: Math.min(
@@ -185,27 +316,236 @@ function getSafeWindowPosition(
                 proposedTop,
                 minimumTop
             ),
-            Math.max(
-                minimumTop,
-                maximumTop
-            )
+            maximumTop
         )
     };
 }
 
-function makeWindowDraggable(windowElement) {
-    const dragHandle = 
-        windowElement.querySelector(".drag-handle");
+/* =========================================================
+   Maximize and restore
+   ========================================================= */
+
+function saveNormalWindowState(
+    windowElement
+) {
+    normalWindowStates.set(
+        windowElement.id,
+        {
+            left:
+                windowElement.offsetLeft,
+
+            top:
+                windowElement.offsetTop,
+
+            width:
+                windowElement.offsetWidth,
+
+            height:
+                windowElement.offsetHeight
+        }
+    );
+}
+
+function updateMaximizeButton(
+    windowElement,
+    isMaximized
+) {
+    const button =
+        windowElement.querySelector(
+            ".maximize-window-button"
+        );
+
+    if (!button) {
+        return;
+    }
+
+    const appTitle =
+        windowElement.dataset.appTitle ||
+        "Application";
+
+    if (isMaximized) {
+        button.textContent = "❐";
+
+        button.setAttribute(
+            "aria-label",
+            `Restore ${appTitle} window`
+        );
+
+        return;
+    }
+
+    button.textContent = "□";
+
+    button.setAttribute(
+        "aria-label",
+        `Maximize ${appTitle} window`
+    );
+}
+
+function maximizeWindow(
+    windowElement
+) {
+    if (
+        windowElement.dataset.maximized ===
+        "true"
+    ) {
+        return;
+    }
+
+    saveNormalWindowState(
+        windowElement
+    );
+
+    windowElement.classList.add(
+        "maximized"
+    );
+
+    windowElement.dataset.maximized =
+        "true";
+
+    updateMaximizeButton(
+        windowElement,
+        true
+    );
+
+    bringWindowToFront(
+        windowElement
+    );
+}
+
+function restoreWindow(
+    windowElement
+) {
+    const savedState =
+        normalWindowStates.get(
+            windowElement.id
+        );
+
+    windowElement.classList.remove(
+        "maximized"
+    );
+
+    windowElement.dataset.maximized =
+        "false";
+
+    if (savedState) {
+        windowElement.style.left =
+            `${savedState.left}px`;
+
+        windowElement.style.top =
+            `${savedState.top}px`;
+
+        windowElement.style.width =
+            `${savedState.width}px`;
+
+        windowElement.style.height =
+            `${savedState.height}px`;
+    }
+
+    normalWindowStates.delete(
+        windowElement.id
+    );
+
+    updateMaximizeButton(
+        windowElement,
+        false
+    );
+
+    keepWindowInsideDesktop(
+        windowElement
+    );
+
+    bringWindowToFront(
+        windowElement
+    );
+}
+
+function toggleMaximizeWindow(
+    windowElement
+) {
+    if (
+        windowElement.dataset.maximized ===
+        "true"
+    ) {
+        restoreWindow(
+            windowElement
+        );
+
+        return;
+    }
+
+    maximizeWindow(
+        windowElement
+    );
+}
+
+maximizeWindowButtons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                const windowElement =
+                    button.closest(
+                        ".app-window"
+                    );
+
+                if (!windowElement) {
+                    return;
+                }
+
+                toggleMaximizeWindow(
+                    windowElement
+                );
+            }
+        );
+    }
+);
+
+/* =========================================================
+   Draggable windows
+   ========================================================= */
+
+function makeWindowDraggable(
+    windowElement
+) {
+    const dragHandle =
+        windowElement.querySelector(
+            ".drag-handle"
+        );
 
     if (!dragHandle) {
         return;
     }
 
     let isDragging = false;
+
     let pointerStartX = 0;
     let pointerStartY = 0;
+
     let windowStartLeft = 0;
     let windowStartTop = 0;
+
+    function stopDragging(event) {
+        if (!isDragging) {
+            return;
+        }
+
+        isDragging = false;
+
+        windowElement.classList.remove(
+            "dragging"
+        );
+
+        if (
+            dragHandle.hasPointerCapture(
+                event.pointerId
+            )
+        ) {
+            dragHandle.releasePointerCapture(
+                event.pointerId
+            );
+        }
+    }
 
     dragHandle.addEventListener(
         "pointerdown",
@@ -218,18 +558,30 @@ function makeWindowDraggable(windowElement) {
                 return;
             }
 
+            if (
+                windowElement.dataset.maximized ===
+                "true"
+            ) {
+                return;
+            }
+
             isDragging = true;
 
-            pointerStartX = event.clientX;
-            pointerStartY = event.clientY;
+            pointerStartX =
+                event.clientX;
 
-            windowStartLeft = 
+            pointerStartY =
+                event.clientY;
+
+            windowStartLeft =
                 windowElement.offsetLeft;
 
             windowStartTop =
                 windowElement.offsetTop;
 
-            bringWindowToFront(windowElement);
+            bringWindowToFront(
+                windowElement
+            );
 
             windowElement.classList.add(
                 "dragging"
@@ -238,6 +590,8 @@ function makeWindowDraggable(windowElement) {
             dragHandle.setPointerCapture(
                 event.pointerId
             );
+
+            event.preventDefault();
         }
     );
 
@@ -248,23 +602,21 @@ function makeWindowDraggable(windowElement) {
                 return;
             }
 
-            const distanceX =
-                event.clientX - pointerStartX;
+            const proposedLeft =
+                windowStartLeft +
+                event.clientX -
+                pointerStartX;
 
-            const distanceY =
-                event.clientY - pointerStartY;
-
-            const newLeft = 
-                windowStartLeft + distanceX;
-
-            const newTop = 
-                windowStartTop + distanceY;
+            const proposedTop =
+                windowStartTop +
+                event.clientY -
+                pointerStartY;
 
             const safePosition =
                 getSafeWindowPosition(
                     windowElement,
-                    newLeft,
-                    newTop
+                    proposedLeft,
+                    proposedTop
                 );
 
             windowElement.style.left =
@@ -275,23 +627,14 @@ function makeWindowDraggable(windowElement) {
         }
     );
 
-        dragHandle.addEventListener(
-            "pointerup",
-            (event) => {
-                if (!isDragging) {
-                    return;
-            }
+    dragHandle.addEventListener(
+        "pointerup",
+        stopDragging
+    );
 
-            isDragging = false;
-
-            windowElement.classList.remove(
-                "dragging"
-            );
-
-            dragHandle.releasePointerCapture(
-                event.pointerId
-            );
-        }
+    dragHandle.addEventListener(
+        "pointercancel",
+        stopDragging
     );
 }
 
@@ -299,24 +642,33 @@ applicationWindows.forEach(
     makeWindowDraggable
 );
 
-function keepWindowInsideDesktop(windowElement) {
+/* =========================================================
+   Browser resize protection
+   ========================================================= */
+
+function keepWindowInsideDesktop(
+    windowElement
+) {
     if (
-        windowElement.classList.contains("hidden")
+        windowElement.classList.contains(
+            "hidden"
+        )
     ) {
         return;
     }
 
-    const currentLeft =
-        windowElement.offsetLeft;
-
-    const currentTop =
-        windowElement.offsetTop;
+    if (
+        windowElement.dataset.maximized ===
+        "true"
+    ) {
+        return;
+    }
 
     const safePosition =
         getSafeWindowPosition(
             windowElement,
-            currentLeft,
-            currentTop
+            windowElement.offsetLeft,
+            windowElement.offsetTop
         );
 
     windowElement.style.left =
@@ -337,31 +689,45 @@ window.addEventListener(
     keepAllWindowsInsideDesktop
 );
 
-/* Notes Application */
+/* =========================================================
+   Notes application
+   ========================================================= */
 
-const notesTitle = 
-    document.getElementById("notes-title");
+const notesTitle =
+    document.getElementById(
+        "notes-title"
+    );
 
-const notesEditor = 
-    document.getElementById("notes-editor");
+const notesEditor =
+    document.getElementById(
+        "notes-editor"
+    );
 
 const saveNoteButton =
-    document.getElementById("save-note-button");
+    document.getElementById(
+        "save-note-button"
+    );
 
 const clearNoteButton =
-    document.getElementById("clear-note-button");
+    document.getElementById(
+        "clear-note-button"
+    );
 
 const notesStatus =
-    document.getElementById("notes-status");
+    document.getElementById(
+        "notes-status"
+    );
 
-const NOTES_STORAGE_KEY = 
+const NOTES_STORAGE_KEY =
     "oms-webos-note";
-
 
 function saveNote() {
     const note = {
-        title: notesTitle.value,
-        content: notesEditor.value
+        title:
+            notesTitle.value,
+
+        content:
+            notesEditor.value
     };
 
     localStorage.setItem(
@@ -369,8 +735,8 @@ function saveNote() {
         JSON.stringify(note)
     );
 
-    notesStatus.textContent = 
-    "Note saved";
+    notesStatus.textContent =
+        "Note saved";
 }
 
 function clearNote() {
@@ -381,7 +747,7 @@ function clearNote() {
         NOTES_STORAGE_KEY
     );
 
-    notesStatus.textContent = 
+    notesStatus.textContent =
         "Note cleared";
 }
 
@@ -391,29 +757,29 @@ function loadSavedNote() {
             NOTES_STORAGE_KEY
         );
 
-        if (!savedNote) {
-            return;
-        }
+    if (!savedNote) {
+        return;
+    }
 
-        try {
-            const note = 
-                JSON.parse(savedNote);
+    try {
+        const note =
+            JSON.parse(savedNote);
 
-            notesTitle.value =
-                note.title || "";
+        notesTitle.value =
+            note.title || "";
 
-            notesEditor.value =
-                note.content || "";
-        } catch (error) {
-            console.error(
-                "Could not load saved note.",
-                error
-            );
+        notesEditor.value =
+            note.content || "";
+    } catch (error) {
+        console.error(
+            "Could not load saved note.",
+            error
+        );
 
-            localStorage.removeItem(
-                NOTES_STORAGE_KEY
-            );
-        }
+        localStorage.removeItem(
+            NOTES_STORAGE_KEY
+        );
+    }
 }
 
 if (
@@ -435,4 +801,3 @@ if (
 
     loadSavedNote();
 }
-

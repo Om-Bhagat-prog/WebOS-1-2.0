@@ -1,208 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset = "UTF-8">
-        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
-        <title>Om's WebOS</title>
-        <link rel = "stylesheet" href = "style.css">
-    </head>
-    <body class = "webos-page">
+<head>
+    <meta charset="UTF-8">
 
-        <main id = "desktop" class = "desktop">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-            <section
-                id="welcome-window"
-                class="app-window hidden"
-                data-app-title="Welcome"
-            >
-                <div class="window-header drag-handle">
-                    <span>Welcome</span>
+    <title>Om's WebOS</title>
 
-                    <div class="window-controls">
-                            <button
-                                class="minimize-window-button"
-                                type="button"
-                                aria-label="Minimize Welcome window"
-                        >
-                            −
-                            </button>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-                        <button
-                            class="close-window-button"
-                            type="button"
-                            aria-label="Close Welcome window"
-                        >
-                            ×
-                        </button>
-                    </div>
-                </div>
+<body class="webos-page">
+    <main id="desktop" class="desktop">
 
-                <div class="window-content">
-                    <h2>Welcome to Om's WebOS</h2>
+        <!-- Welcome window -->
+        <section
+            id="welcome-window"
+            class="app-window hidden"
+            data-app-title="Welcome"
+            data-minimized="false"
+            data-maximized="false"
+        >
+            <div class="window-header drag-handle">
+                <span>Welcome</span>
 
-                    <p>
-                        This operating system was created using HTML, CSS,
-                        and JavaScript.
-                    </p>
-                </div>
-            </section>
-            
-            <section 
-                id = "notes-window"
-                class = "app-window hidden"
-                data-app-title = "Notes"
-            >
-                <div class = "window-header drag-handle">
-                    <span>Notes</span>
+                <div class="window-controls">
+                    <button
+                        class="minimize-window-button"
+                        type="button"
+                        aria-label="Minimize Welcome window"
+                    >
+                        −
+                    </button>
 
                     <button
-                        class = "close-window-button"
-                        type = "button"
-                        aria-label = "Close Notes window"
+                        class="maximize-window-button"
+                        type="button"
+                        aria-label="Maximize Welcome window"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        class="close-window-button"
+                        type="button"
+                        aria-label="Close Welcome window"
                     >
                         ×
                     </button>
                 </div>
-
-                <div class="window-content notes-content">
-    <h2>Notes</h2>
-
-    <label for="notes-title">
-        Note title
-    </label>
-
-    <input
-        id="notes-title"
-        class="notes-title"
-        type="text"
-        placeholder="Enter a title"
-    >
-
-    <label for="notes-editor">
-        Note
-    </label>
-
-    <textarea
-        id="notes-editor"
-        class="notes-editor"
-        placeholder="Start writing..."
-    ></textarea>
-
-    <div class="notes-actions">
-        <button
-            id="save-note-button"
-            class="notes-button"
-            type="button"
-        >
-            Save
-        </button>
-
-        <button
-            id="clear-note-button"
-            class="notes-button"
-            type="button"
-        >
-            Clear
-        </button>
-
-        <span
-            id="notes-status"
-            class="notes-status"
-            role="status"
-            aria-live="polite"
-        ></span>
-    </div>
-</div>
-                
-            </section>
-
-            <a class = "back-button" href = "index.html">
-                Back to Intro
-            </a>
-
-            <section class = "desktop-icons">
-                <button 
-                    class = "desktop-icon"
-                    type = "button"
-                    data-open-window = "welcome-window"
-                    >
-                    <span class = "desktop-icon-image">
-                        <img
-                            src = "images/welcome-icon.jpg"
-                            alt = ""
-                        >
-                        </span>
-                    <span>Welcome</span>
-                </button>
-
-                <button 
-                    class = "desktop-icon"
-                    type = "button"
-                    data-open-window = "notes-window"
-                    >
-                    <span class = "desktop-icon-image">
-                        <img
-                            src = "images/notes.png"
-                            alt = ""
-                        >
-                    </span>
-                    <span>Notes</span>
-                </button>
-
-                <button class = "desktop-icon" type = "button">
-                    <span class = "desktop-icon-image">
-                        <img
-                            src = "images/nature.png"
-                            alt = ""
-                        >
-                    </span>
-                    <span>Nature</span>
-                </button>
-
-                <button class = "desktop-icon" type = "button">
-                    <span class = "desktop-icon-image">
-                        <img
-                            src = "images/calculator.png"
-                            alt = ""
-                        >
-                    </span>
-                    <span>Calculator</span>
-                </button>
-
-                <button class = "desktop-icon" type = "button">
-                    <span class = "desktop-icon-image">
-                        <img
-                            src = "images/Screenshot 2026-07-31 163743.png"
-                            alt = ""
-                        >
-                    </span>
-                    <span>About Me</span>
-                </button>
-
-                <button class = "desktop-icon" type = "button">
-                    <span class = "desktop-icon-image">
-                        <img
-                            src = "images/settings.jpg"
-                            alt = ""
-                        >
-                    </span>
-                    <span>Settings</span>
-                </button>
-            </section>
-
-            <div class = "taskbar">
-                <span class = "taskbar-title">
-                    Om's WebOS
-                </span>
-
-                <div
-                    id = "taskbar-apps"
-                    class = "taskbar-apps"
-                ></div>
             </div>
 
-        </main>
+            <div class="window-content">
+                <h2>Welcome to Om's WebOS</h2>
 
-        <script src = "script.js"></script>
-    </body>
+                <p>
+                    This operating system was created using HTML,
+                    CSS, and JavaScript.
+                </p>
+            </div>
+        </section>
+
+        <!-- Notes window -->
+        <section
+            id="notes-window"
+            class="app-window hidden"
+            data-app-title="Notes"
+            data-minimized="false"
+            data-maximized="false"
+        >
+            <div class="window-header drag-handle">
+                <span>Notes</span>
+
+                <div class="window-controls">
+                    <button
+                        class="minimize-window-button"
+                        type="button"
+                        aria-label="Minimize Notes window"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        class="maximize-window-button"
+                        type="button"
+                        aria-label="Maximize Notes window"
+                    >
+                        □
+                    </button>
+
+                    <button
+                        class="close-window-button"
+                        type="button"
+                        aria-label="Close Notes window"
+                    >
+                        ×
+                    </button>
+                </div>
+            </div>
+
+            <div class="window-content notes-content">
+                <h2>Notes</h2>
+
+                <label for="notes-title">
+                    Note title
+                </label>
+
+                <input
+                    id="notes-title"
+                    class="notes-title"
+                    type="text"
+                    placeholder="Enter a title"
+                >
+
+                <label for="notes-editor">
+                    Note
+                </label>
+
+                <textarea
+                    id="notes-editor"
+                    class="notes-editor"
+                    placeholder="Start writing..."
+                ></textarea>
+
+                <div class="notes-actions">
+                    <button
+                        id="save-note-button"
+                        class="notes-button"
+                        type="button"
+                    >
+                        Save
+                    </button>
+
+                    <button
+                        id="clear-note-button"
+                        class="notes-button"
+                        type="button"
+                    >
+                        Clear
+                    </button>
+
+                    <span
+                        id="notes-status"
+                        class="notes-status"
+                        role="status"
+                        aria-live="polite"
+                    ></span>
+                </div>
+            </div>
+        </section>
+        <section
+            id = "nature-window"
+            class = "app-window hidden"
+                data-app-title = "Nature"
+                data-minimized = "false"
+                data-maximized = "false"
+            >
+                <div class = "window-header drag-handle">
+                    <span>Nature</span>
+
+                    <div class = "window-controls">
+                    <button class = "minimize-window-button"
+                    type = "button"
+                    aria-label = "Minimize Nature window"
+                >
+                    −
+                </button>
+
+                <button
+                    class = "maximize-window-button"
+                    type = "button"
+                    aria-label = "Maximize Nature window"
+                >
+                    □
+                </button>
+
+                <button
+                    class = "close-window-button"
+                    type = "button"
+                    aria-label = "Close Nature window"
+                >
+                    ×
+                </button>
+            </div>
+        </div>
+
+        <div class = "window-content nature-content">
+            <h2>Daily Nature Challenges</h2>
+
+            <p>
+                Complete small actions that help the environment.
+            </p>
+
+            <label class= "nature-challenge">
+                <input
+                    type = "checkbox"
+                    class = "nature-checkbox"
+                >
+                Spend 15 minutes outside
+            </label>
+
+            <label class = "nature-challenge">
+                <input  
+                    type = "checkbox"
+                    class = "nature-checkbox"
+                >
+                Pick up one piece of litter
+            </label>
+
+            <label class = "nature-challenge">
+                <input
+                    type = "checkbox"
+                    class = "nature-checkbox"
+                >
+                Avoid one single-use platic item
+            </label>
+
+            <p
+                id = "nature-progress"
+                class = "nature-progress"
+                role = "status"
+                aria-live = "polite"
+            >
+                0 of 3 challenges completed
+            </p>
+
+            <button
+                id = "reset-nature-button"
+                class = "nat-reset-button"
+                type = "button"
+            >
+                Reset challenges
+            </button>
+        </div>
+        </section>
+        <!-- Back button -->
+        <a class="back-button" href="index.html">
+            Back to Intro
+        </a>
+
+        <!-- Desktop icons -->
+        <section class="desktop-icons">
+            <button
+                class="desktop-icon"
+                type="button"
+                data-open-window="welcome-window"
+            >
+                <span class="desktop-icon-image">
+                    <img
+                        src="images/welcome-icon.jpg"
+                        alt=""
+                    >
+                </span>
+
+                <span>Welcome</span>
+            </button>
+
+            <button
+                class="desktop-icon"
+                type="button"
+                data-open-window="notes-window"
+            >
+                <span class="desktop-icon-image">
+                    <img
+                        src="images/notes.png"
+                        alt=""
+                    >
+                </span>
+
+                <span>Notes</span>
+            </button>
+
+            <button
+                class="desktop-icon"
+                type="button"
+            >
+                <span class="desktop-icon-image">
+                    <img
+                        src="images/nature.png"
+                        alt=""
+                    >
+                </span>
+
+                <span>Nature</span>
+            </button>
+
+            <button
+                class="desktop-icon"
+                type="button"
+            >
+                <span class="desktop-icon-image">
+                    <img
+                        src="images/calculator.png"
+                        alt=""
+                    >
+                </span>
+
+                <span>Calculator</span>
+            </button>
+
+            <button
+                class="desktop-icon"
+                type="button"
+            >
+                <span class="desktop-icon-image">
+                    <img
+                        src="images/Screenshot 2026-07-31 163743.png"
+                        alt=""
+                    >
+                </span>
+
+                <span>About Me</span>
+            </button>
+
+            <button
+                class="desktop-icon"
+                type="button"
+            >
+                <span class="desktop-icon-image">
+                    <img
+                        src="images/settings.jpg"
+                        alt=""
+                    >
+                </span>
+
+                <span>Settings</span>
+            </button>
+        </section>
+
+        <!-- Taskbar -->
+        <div class="taskbar">
+            <span class="taskbar-title">
+                Om's WebOS
+            </span>
+
+            <div
+                id="taskbar-apps"
+                class="taskbar-apps"
+            ></div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>
